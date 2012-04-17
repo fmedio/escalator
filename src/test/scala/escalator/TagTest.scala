@@ -1,16 +1,9 @@
 package escalator
 
-import escalator.Tag
 import java.io.StringWriter
 import java.util.ArrayList
 import collection.JavaConversions
 import org.scalatest.FunSuite
-import org.scalatest.FunSuite.test
-import org.scalatest.FunSuite.test
-import org.scalatest.FunSuite.test
-import org.scalatest.FunSuite.test
-import org.scalatest.FunSuite.test
-import org.scalatest.FunSuite.test
 
 class TagTest extends FunSuite {
   test("Attributes") {
