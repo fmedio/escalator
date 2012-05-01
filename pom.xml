@@ -4,7 +4,7 @@
     <groupId>escalator</groupId>
     <artifactId>escalator</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>escalator</name>
     <url>http://github.com/fmedio/escalator</url>
     <properties>
@@ -44,7 +44,11 @@
             <artifactId>maven-scala-plugin</artifactId>
             <version>2.15.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.joda</groupId>
+            <artifactId>joda-convert</artifactId>
+            <version>1.1</version>
+        </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.9.1</artifactId>
