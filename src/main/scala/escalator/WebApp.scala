@@ -23,6 +23,7 @@ class WebApp(val webDir: String,
     contextHandler.addServlet(new ServletHolder(dispatcher), "/")
     server.setHandler(contextHandler)
     server.start
+    Log.info(this, "WebApp started on port " + httpPort)
     server.join
   }
 }

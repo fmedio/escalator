@@ -8,6 +8,7 @@ class HandleStaticFiles(val webDir: String,
                         val fourOhFour: () => Verb[Any],
                         val request: HttpServletRequest) extends Verb[Any] {
 
+  log = false
 
   def execute(arg: Any): Resource = {
     val resource: String = request.getRequestURI

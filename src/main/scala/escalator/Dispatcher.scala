@@ -2,6 +2,7 @@ package escalator
 
 import javax.servlet.ServletOutputStream
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse, HttpServlet}
+import org.eclipse.jetty.io.EofException
 
 class Dispatcher(val webDir: String,
                  val fourOhFour: () => Verb[Any],
@@ -13,12 +14,17 @@ class Dispatcher(val webDir: String,
     val verb: Verb[_ <: Any] = findVerb(req)
     val factory: ParameterFactory = new ParameterFactory()
     val parameters: MultiMap[String, String] = factory.getParameters(req)
+    val before = System.currentTimeMillis()
     val resource: Resource = {
       try {
         verb.f(parameters)
       } catch {
         case t: Throwable => ohNoes(t).execute(new Nil())
       }
+    }
+    val after = System.currentTimeMillis() - before
+    if (verb.log) {
+      Log.debug(this, "Served " + verb.getClass.getName + " in " + after  + "ms")
     }
 
     try {
@@ -28,6 +34,9 @@ class Dispatcher(val webDir: String,
       resource.render(stream)
       stream.close()
     } catch {
+      case t: EofException => {
+        return
+      }
       case t: Throwable => {
         Log.info(this, "Error while rendering", t)
       }

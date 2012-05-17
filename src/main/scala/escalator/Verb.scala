@@ -13,4 +13,6 @@ abstract class Verb[T](implicit m: scala.reflect.Manifest[T]) {
   }
 
   def execute(arg: T): Resource
+
+  var log: Boolean = true
 }
