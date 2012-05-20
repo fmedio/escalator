@@ -4,7 +4,7 @@ import java.io.Writer
 import org.apache.commons.lang.StringEscapeUtils
 
 
-class Tag(val name: String, seq: List[Any]) extends Writeable {
+class Tag(val name: String, seq: List[Any]) extends Writable {
   def this(name: String, children: Any*) = this(name, children.toList)
 
   private val attributes: MultiMap[String, String] = new MultiMap[String, String]()
