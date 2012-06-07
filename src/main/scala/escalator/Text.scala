@@ -8,3 +8,10 @@ class Text(val s: String) extends Writable {
     writer.write(StringEscapeUtils.escapeXml(s))
   }
 }
+
+
+class UnsecureText(val s: String) extends Writable {
+  def render(writer: Writer) {
+    writer.write(s)
+  }
+}

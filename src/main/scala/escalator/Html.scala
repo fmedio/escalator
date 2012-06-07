@@ -5,12 +5,24 @@ object Html {
     new Tag("a", children).attr("href" -> href)
   }
 
+  def button(inputType: String, children: Any*): Tag = {
+    new Tag("button", children).attr("type" -> inputType)
+  }
+
   def div(children: Any*): Tag = {
     new Tag("div", children)
   }
 
   def em(children: Any*): Tag = {
     new Tag("em", children)
+  }
+
+  def form(children: Any*): Tag = {
+    new Tag("form", children)
+  }
+
+  def input(inputType: String, children: Any*): Tag = {
+    new Tag("input").attr("type" -> inputType)
   }
 
   def h1(children: Any*): Tag = {
@@ -51,6 +63,10 @@ object Html {
 
   def li(children: Any*): Tag = {
     new Tag("li", children)
+  }
+
+  def nbsp(): Writable = {
+    new UnsecureText("&nbsp;")
   }
 
   def small(children: Any*): Tag = {
