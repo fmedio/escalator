@@ -17,12 +17,12 @@ object Html {
     new Tag("em", children)
   }
 
-  def form(children: Any*): Tag = {
-    new Tag("form", children)
+  def form(method: String, action: String, children: Any*): Tag = {
+    new Tag("form", children).attr("method" -> method, "action" -> action)
   }
 
-  def input(inputType: String, children: Any*): Tag = {
-    new Tag("input").attr("type" -> inputType)
+  def input(inputType: String, name: String, children: Any*): Tag = {
+    new Tag("input").attr("type" -> inputType, "name" -> name)
   }
 
   def h1(children: Any*): Tag = {
