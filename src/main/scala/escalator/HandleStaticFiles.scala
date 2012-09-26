@@ -2,7 +2,7 @@ package escalator
 
 import java.io.{OutputStream, FileInputStream, File}
 import org.apache.commons.io.IOUtils
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
+import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse}
 import org.joda.time.DateTime
 
 class HandleStaticFiles(val webDir: String,
@@ -11,12 +11,12 @@ class HandleStaticFiles(val webDir: String,
 
   log = false
 
-  def execute(arg: Any): Resource = {
+  def execute(cookies: Array[Cookie], arg: Any): Resource = {
     val resource: String = request.getRequestURI
     val mimeType: String = Extensions.mimeType(resource)
     val file: File = new File(webDir, resource)
     if (!file.exists) {
-      return fourOhFour().execute(new Nil())
+      return fourOhFour().execute(cookies, new Nil())
     }
     new FileResource(mimeType, file)
   }

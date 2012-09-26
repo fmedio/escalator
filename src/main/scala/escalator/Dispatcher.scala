@@ -1,6 +1,6 @@
 package escalator
 
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse, HttpServlet}
+import javax.servlet.http.{Cookie, HttpServletRequest, HttpServletResponse, HttpServlet}
 import org.eclipse.jetty.io.EofException
 import java.util.zip.GZIPOutputStream
 import java.io.BufferedOutputStream
@@ -10,17 +10,17 @@ class Dispatcher(val webDir: String,
                  val ohNoes: Throwable => Verb[Any],
                  val verbs: Map[String, () => Verb[_ <: Any]]) extends HttpServlet {
 
-
   override def service(req: HttpServletRequest, resp: HttpServletResponse) {
     val verb: Verb[_ <: Any] = findVerb(req)
     val factory: ParameterFactory = new ParameterFactory()
     val parameters: MultiMap[String, String] = factory.getParameters(req)
     val before = System.currentTimeMillis()
+    val cookies: Array[Cookie] = req.getCookies()
     val resource: Resource = {
       try {
-        verb.f(parameters)
+        verb.execute(cookies, parameters)
       } catch {
-        case t: Throwable => ohNoes(t).execute(new Nil())
+        case t: Throwable => ohNoes(t).execute(cookies, new Nil())
       }
     }
     val after = System.currentTimeMillis() - before
@@ -45,6 +45,7 @@ class Dispatcher(val webDir: String,
       }
     }
   }
+
 
   private def findVerb(request: HttpServletRequest): Verb[_ <: Any] = {
     val name: String = request.getRequestURI
