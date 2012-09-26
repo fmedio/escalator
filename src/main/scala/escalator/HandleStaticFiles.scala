@@ -1,8 +1,9 @@
 package escalator
 
-import java.io.{OutputStream, InputStream, FileInputStream, File}
+import java.io.{OutputStream, FileInputStream, File}
 import org.apache.commons.io.IOUtils
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
+import org.joda.time.DateTime
 
 class HandleStaticFiles(val webDir: String,
                         val fourOhFour: () => Verb[Any],
@@ -17,7 +18,7 @@ class HandleStaticFiles(val webDir: String,
     if (!file.exists) {
       return fourOhFour().execute(new Nil())
     }
-    new StreamResource(mimeType, new FileInputStream(file))
+    new FileResource(mimeType, file)
   }
 }
 
@@ -52,14 +53,19 @@ object Extensions {
   }
 }
 
-class StreamResource(val contentType: String, stream: InputStream) extends Resource {
+class FileResource(val contentType: String, val file: File) extends Resource {
   def statusCode: Int = HttpServletResponse.SC_OK
 
   def render(outputStream: OutputStream) {
+    var stream = new FileInputStream(file)
     IOUtils.copy(stream, outputStream)
   }
 
   def extraHeaders: Map[String, String] = {
-    Map()
+    var dateFormatter = new WebDateFormatter()
+    Map(
+      "Expires" -> dateFormatter.format(DateTime.now().plusYears(1)),
+      "ETag" -> dateFormatter.format(new DateTime(file.lastModified()))
+    )
   }
 }

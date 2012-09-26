@@ -1,8 +1,9 @@
 package escalator
 
-import javax.servlet.ServletOutputStream
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse, HttpServlet}
 import org.eclipse.jetty.io.EofException
+import java.util.zip.GZIPOutputStream
+import java.io.BufferedOutputStream
 
 class Dispatcher(val webDir: String,
                  val fourOhFour: () => Verb[Any],
@@ -30,7 +31,9 @@ class Dispatcher(val webDir: String,
     try {
       resp.setStatus(resource.statusCode)
       resp.setContentType(resource.contentType)
-      val stream: ServletOutputStream = resp.getOutputStream
+      resp.setHeader("Content-Encoding", "gzip")
+      resource.extraHeaders.foreach({case (k, v) => resp.setHeader(k, v)})
+      val stream = new GZIPOutputStream(new BufferedOutputStream(resp.getOutputStream), 1024 * 1024)
       resource.render(stream)
       stream.close()
     } catch {
