@@ -64,7 +64,7 @@ class FileResource(val contentType: String, val file: File) extends Resource {
   def extraHeaders: Map[String, String] = {
     var dateFormatter = new WebDateFormatter()
     Map(
-      "Expires" -> dateFormatter.format(DateTime.now().plusYears(1)),
+      "Expires" -> dateFormatter.format(DateTime.now().plusMonths(6)),
       "ETag" -> dateFormatter.format(new DateTime(file.lastModified()))
     )
   }
