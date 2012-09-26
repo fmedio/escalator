@@ -5,6 +5,8 @@ object Html {
     new Tag("a", children).attr("href" -> href)
   }
 
+  var br = new Tag("br")
+
   def button(inputType: String, children: Any*): Tag = {
     new Tag("button", children).attr("type" -> inputType)
   }
@@ -61,8 +63,20 @@ object Html {
     new Tag("img").attr("src" -> src)
   }
 
+  def label(children: Any*): Tag = {
+    new Tag("label", children)
+  }
+
+  def legend(children: Any*): Tag = {
+    new Tag("legend", children)
+  }
+
   def li(children: Any*): Tag = {
     new Tag("li", children)
+  }
+
+  def meta(name: String, content: String): Tag = {
+    new Tag("meta").attr("name" -> name, "content" -> content)
   }
 
   def nbsp(): Writable = {
