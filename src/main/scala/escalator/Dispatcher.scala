@@ -33,6 +33,7 @@ class Dispatcher(val webDir: String,
       resp.setContentType(resource.contentType)
       resp.setHeader("Content-Encoding", "gzip")
       resource.extraHeaders.foreach({case (k, v) => resp.setHeader(k, v)})
+      resource.cookies.foreach(c => resp.addCookie(c))
       val stream = new GZIPOutputStream(new BufferedOutputStream(resp.getOutputStream), 1024 * 1024)
       resource.render(stream)
       stream.close()
