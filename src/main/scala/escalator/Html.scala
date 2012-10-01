@@ -83,6 +83,10 @@ object Html {
     new UnsecureText("&nbsp;")
   }
 
+  def p(children: Any*): Tag = {
+    new Tag("p", children)
+  }
+
   def small(children: Any*): Tag = {
     new Tag("small", children)
   }
