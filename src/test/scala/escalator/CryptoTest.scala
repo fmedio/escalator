@@ -1,15 +1,15 @@
 package escalator
 
 import org.scalatest.FunSuite
-import javax.crypto.spec.SecretKeySpec
 import org.apache.commons.codec.binary.Base64
-import javax.crypto.BadPaddingException
+import javax.crypto.{KeyGenerator, BadPaddingException}
 
 class CryptoTest extends FunSuite {
-  val keyBytes = Array.range(0, 16).map(i => i.toByte)
-  var keyspec = new SecretKeySpec(keyBytes, "AES")
-  val plainText: String = "foo poop hello"
-  val crypto: Crypto = new Crypto(keyspec)
+  val kgen: KeyGenerator = KeyGenerator.getInstance("AES")
+  kgen.init(128)
+  val keySpec = kgen.generateKey
+  val plainText: String = "1"
+  val crypto: Crypto = new Crypto(keySpec)
 
   test("Encrypt") {
     val result = crypto.encrypt(plainText)
@@ -22,7 +22,7 @@ class CryptoTest extends FunSuite {
   }
 
   test("Decrypt Garbage") {
-    var garbage = Base64.encodeBase64URLSafeString("0123456789012345".getBytes)
+    val garbage = Base64.encodeBase64URLSafeString("0123456789012345".getBytes)
     intercept[BadPaddingException] {
       crypto.decrypt(garbage)
     }
