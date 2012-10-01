@@ -12,12 +12,12 @@ class CryptoTest extends FunSuite {
   val crypto: Crypto = new Crypto(keyspec)
 
   test("Encrypt") {
-    var result = crypto.encrypt(plainText)
+    val result = crypto.encrypt(plainText)
 
     assert(plainText != result)
     System.out.println(result)
 
-    var decrypted = crypto.decrypt(result)
+    val decrypted = crypto.decrypt(result)
     assert(plainText ===  decrypted)
   }
 
